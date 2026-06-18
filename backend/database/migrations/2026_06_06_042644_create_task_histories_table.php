@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('task_histories', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('task_id')->constrained('tasks')->cascadeOnDelete();
+            $table->foreignUuid('changed_by')->constrained('users');
+            $table->string('field_name');
+            $table->text('old_value')->nullable();
+            $table->text('new_value')->nullable();
+            $table->timestamp('changed_at')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('task_histories');

@@ -6,20 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('task_assignees', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->foreignUuid('task_id')->constrained('tasks')->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->timestamp('assigned_at')->nullable();
+
+            $table->primary(['task_id', 'user_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('task_assignees');

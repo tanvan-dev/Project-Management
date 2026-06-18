@@ -6,20 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('kanban_columns', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('project_id')->constrained('projects')->cascadeOnDelete();
+            $table->string('name');
+            $table->string('display_name');
+            $table->integer('wip_limit')->nullable();
+            $table->integer('position')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('kanban_columns');

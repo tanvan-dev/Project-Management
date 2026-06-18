@@ -8,21 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('workspaces', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('workspace_id')->constrained('workspaces')->cascadeOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('methodology')->default('scrum');
             $table->foreignUuid('owner_id')->constrained('users');
             $table->json('settings')->nullable();
-            $table->boolean('is_archived')->default(false);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('workspaces');
     }
 };

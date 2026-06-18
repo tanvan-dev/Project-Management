@@ -6,20 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('task_attachments', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('task_id')->constrained('tasks')->cascadeOnDelete();
+            $table->string('file_name');
+            $table->string('file_url');
+            $table->bigInteger('file_size')->nullable();
+            $table->string('mime_type')->nullable();
+            $table->foreignUuid('uploaded_by')->constrained('users');
+            $table->timestamp('uploaded_at')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('task_attachments');
